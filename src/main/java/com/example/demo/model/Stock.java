@@ -6,48 +6,49 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class Stock implements Serializable {
-	
-    private static final long serialVersionUID = 1L;
-    private static final String DATE_FORMAT = "MMM dd yyyy HH:mm:ss";
 
-    private String code;
-    private double price;
-    private Date date = new Date();
-    private DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+	private static final long serialVersionUID = 1L;
+	private static final String DATE_FORMAT = "MMM dd yyyy HH:mm:ss";
 
-    public Stock() { }
+	private String code;
+	private double price;
+	private Date date = new Date();
+	private DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
-    public Stock(String code, double price) {
-        this.code = code;
-        this.price = price;
-    }
+	public Stock() {
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public Stock(String code, double price) {
+		this.code = code;
+		this.price = price;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public double getPrice() {
+		return price;
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public String getDateFormatted() {
-        return dateFormat.format(date);
-    }
-    
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getDateFormatted() {
+		return dateFormat.format(date);
+	}
+
 }
