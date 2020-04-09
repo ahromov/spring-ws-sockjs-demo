@@ -16,56 +16,58 @@ import java.util.Random;
 
 @Controller
 public class StockController {
-    private TaskScheduler taskScheduler;
-    private SimpMessagingTemplate simpMessagingTemplate;
 
-    private List<Stock> stocks = new ArrayList<Stock>();
-    private Random random = new Random(System.currentTimeMillis());
+	private TaskScheduler taskScheduler;
+	private SimpMessagingTemplate simpMessagingTemplate;
 
-    public StockController() {
-        stocks.add(new Stock("VMW", 1.00d));
-        stocks.add(new Stock("EMC", 1.00d));
-        stocks.add(new Stock("GOOG", 1.00d));
-        stocks.add(new Stock("IBM", 1.00d));
-    }
+	private List<Stock> stocks = new ArrayList<Stock>();
+	private Random random = new Random(System.currentTimeMillis());
 
-    @MessageMapping("/addStock")
-    public void addStock(Stock stock) throws Exception {
-        stocks.add(stock);
-        broadcastUpdatedPrices();
-    }
+	public StockController() {
+		stocks.add(new Stock("VMW", 1.00d));
+		stocks.add(new Stock("EMC", 1.00d));
+		stocks.add(new Stock("GOOG", 1.00d));
+		stocks.add(new Stock("IBM", 1.00d));
+	}
 
-    @Autowired
-    public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-    }
+	@MessageMapping("/addStock")
+	public void addStock(Stock stock) throws Exception {
+		stocks.add(stock);
+		broadcastUpdatedPrices();
+	}
 
-    @Autowired
-    public void setTaskScheduler(TaskScheduler taskScheduler) {
-        this.taskScheduler = taskScheduler;
-    }
+	@Autowired
+	public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
+		this.simpMessagingTemplate = simpMessagingTemplate;
+	}
 
-    private void broadcastUpdatedPrices() {
-        for(Stock stock : stocks) {
-            stock.setPrice(stock.getPrice() + (getUpdatedStockPrice() * stock.getPrice()));
-            stock.setDate(new Date());
-        }
+	@Autowired
+	public void setTaskScheduler(TaskScheduler taskScheduler) {
+		this.taskScheduler = taskScheduler;
+	}
 
-        simpMessagingTemplate.convertAndSend("/topic/price", stocks);
-    }
+	private void broadcastUpdatedPrices() {
+		for (Stock stock : stocks) {
+			stock.setPrice(stock.getPrice() + (getUpdatedStockPrice() * stock.getPrice()));
+			stock.setDate(new Date());
+		}
 
-    private double getUpdatedStockPrice() {
-        double priceChange = random.nextDouble() * 5.0;
+		simpMessagingTemplate.convertAndSend("/topic/price", stocks);
+	}
 
-        if (random.nextInt(2) == 1) {
-            priceChange = -priceChange;
-        }
+	private double getUpdatedStockPrice() {
+		double priceChange = random.nextDouble() * 5.0;
 
-        return priceChange / 100.0;
-    }
+		if (random.nextInt(2) == 1) {
+			priceChange = -priceChange;
+		}
 
-    @PostConstruct
-    private void broadcastTimePeriodically() {
-        taskScheduler.scheduleAtFixedRate(() -> broadcastUpdatedPrices(), 1000);
-    }
+		return priceChange / 100.0;
+	}
+
+	@PostConstruct
+	private void broadcastTimePeriodically() {
+		taskScheduler.scheduleAtFixedRate(() -> broadcastUpdatedPrices(), 1000);
+	}
+	
 }
