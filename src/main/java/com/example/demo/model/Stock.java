@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class Stock implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final String DATE_FORMAT = "MMM dd yyyy HH:mm:ss";
 
@@ -48,4 +49,5 @@ public class Stock implements Serializable {
     public String getDateFormatted() {
         return dateFormat.format(date);
     }
+    
 }
